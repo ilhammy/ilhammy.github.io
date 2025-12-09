@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding of Nisa Efriani & Ilham Maulana Yusup</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Merriweather:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. Variabel & Reset --- */
+        :root {
+            --primary-gold: #D4AF37; /* Warna Emas */
+            --primary-dark: #5a4b2c;
+            --bg-cream: #FAF9F6;
+            --text-dark: #333;
+            --font-latin: 'Great Vibes', cursive; /* Font Nama */
+            --font-body: 'Merriweather', serif;   /* Font Teks */
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            /* Mencegah scroll horizontal */
+            scroll-behavior: smooth;
+        }
+
+        /* --- 2. Ornamen & Dekorasi --- */
+        /* Frame Border di sekeliling halaman */
+        .page-frame {
+            position: fixed;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 2px solid var(--primary-gold);
+            pointer-events: none; /* Agar bisa diklik tembus */
+            z-index: 900;
+        }
+        
+        .page-frame::before {
+            content: "";
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px solid var(--primary-gold);
+        }
+
+        /* Posisi Bunga/Ornamen (Ganti src img nanti dengan gambar bunga transparan .png) */
+        .ornament {
+            position: fixed;
+            width: 150px; /* Sesuaikan ukuran */
+            z-index: 901;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        .orn-top-left { top: 0; left: 0; transform: rotate(0deg); }
+        .orn-top-right { top: 0; right: 0; transform: rotate(90deg); }
+        .orn-bottom-left { bottom: 0; left: 0; transform: rotate(-90deg); }
+        .orn-bottom-right { bottom: 0; right: 0; transform: rotate(180deg); }
+
+        /* --- 3. Overlay (Cover Depan) --- */
+        #opening-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #fffdf5 0%, #f0e6cc 100%);
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+        }
+        .filter-bg {
+        	background-color: rgba(0,0,0,.7);
+        	width: 100%; 
+        	height: 100%;
+        	display: flex;
+        	justify-content: center;
+        	align-items: center;
+        	color: var(--bg-cream);
+        }
+        .filter-bg p {
+        	color: rgba(255,255,255, 0.7);
+        }
+
+        #opening-overlay.closed {
+            transform: translateY(-100%); /* Geser ke atas saat dibuka */
+            opacity: 0;
+        }
+
+        .cover-content h1 {
+            font-family: var(--font-latin);
+            font-size: 3rem;
+            color: var(--primary-gold);
+            margin: 10px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .btn-buka {
+            background-color: var(--primary-gold);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            letter-spacing: 1px;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            transition: transform 0.3s, background 0.3s;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-buka:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        /* --- 4. Main Content Styling --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px 20px; /* Padding bawah lebih besar */
+            position: relative;
+            z-index: 10;
+        }
+
+        section {
+            min-height: 80vh; /* Tiap section minimal hampir setinggi layar */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 40px 20px;
+            /* Animation Initial State */
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-out;
+        }
+
+        /* Class untuk trigger animasi */
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-family: var(--font-latin);
+            font-size: 3rem;
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* Couple Photo */
+        .couple-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .couple-card {
+            flex: 1;
+            min-width: 250px;
+        }
+        .couple-card p {
+        	font-size: .8rem;
+        }
+        .photo-frame {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 15px auto;
+            border-radius: 50%;
+            border: 3px solid var(--primary-gold);
+            padding: 5px;
+            background: white;
+        }
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Date Box */
+        .date-badge {
+            display: inline-block;
+            border: 1px solid var(--primary-gold);
+            padding: 15px 30px;
+            border-radius: 8px;
+            margin: 20px 0;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Galeri Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+        .gallery-grid img {
+            width: 100%;
+            border-radius: 8px;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .gallery-grid img:hover {
+            transform: scale(1.03);
+        }
+
+        /* Form Styles */
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            background: #fff;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+        }
+
+        /* --- Footer Menu (Floating) --- */
+        .nav-bottom {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 950;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-bottom a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+            padding: 0 7px;
+        }
+        .nav-bottom a:hover {
+            color: var(--primary-gold);
+        }
+
+    </style>
+</head>
+<body style="overflow: hidden;">
+
+    <audio id="bg-music" loop>
+        <source src="/assets/backsound.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="page-frame"></div>
+
+    <img src="/assets/bunga-sudut.png" class="ornament orn-top-left" alt="Ornamen Kiri Atas">
+    <img src="/assets/bunga-sudut.png" class="ornament orn-top-right" alt="Ornamen Kanan Atas">
+    <img src="/assets/bunga-sudut.png" class="ornament orn-bottom-left" alt="Ornamen Kiri Bawah">
+    <img src="/assets/bunga-sudut.png" class="ornament orn-bottom-right" alt="Ornamen Kanan Bawah">
+
+    <div id="opening-overlay" style="background-image: url('/assets/bg-depan.jpg');">
+    	<div class="filter-bg">
+        <div class="cover-content">
+            <p>The Wedding of</p>
+            <h1>Nisa Efriani</h1>
+            <h1>&</h1>
+            <h1>Ilham Maulana Yusup</h1>
+            <p>Kepada Yth.<br>Bapak/Ibu/Saudara/i</p>
+            <div style="margin: 20px 0; font-weight: bold;" id="namaTamu">Nama Tamu Undangan</div>
+            <button class="btn-buka" id="btn-open">
+                <i class="fas fa-envelope-open"></i> Buka Undangan
+            </button>
+        </div>
+    	</div>
+    </div>
+
+    <main class="container">
+        
+        <section id="home">
+            <p><strong>Assalamu’alaikum Wr.Wb</strong></p>
+            <p>Tanpa mengurangi rasa hormat dan dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i pada acara resepsi pernikahan:</p>
+            
+            <div class="couple-wrap">
+                <div class="couple-card">
+                    <div class="photo-frame">
+                        <img src="/assets/cewe.jpg" alt="Foto Wanita">
+                    </div>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 5px;">Nisa Efriani</h2>
+                    <p>Putri Bp. Alm Mardiono & Ibu Pairah</p>
+                </div>
+                
+                <h2 style="font-size: 4rem; margin: 0 10px;">&</h2>
+                
+                <div class="couple-card">
+                    <div class="photo-frame">
+                        <img src="/assets/cowo.jpg" alt="Foto Pria">
+                    </div>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 5px;">Ilham Maulana Yusup</h2>
+                    <p>Putra Bp. Endang Ucup & Ibu Almh Oon Rojanah</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="event">
+            <h2>Save The Date</h2>
+            <div class="date-badge">
+                <h3 style="margin: 0; font-size: 1.5rem;">Rabu, 8 April 2026</h3>
+            </div>
+            
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                <div style="background: white; padding: 20px; border-radius: 8px; flex: 1; min-width: 280px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <h3 style="color: var(--primary-gold);">Akad & Resepsi</h3>
+                    <p>Pukul <strong>08.00 WIB - Selesai</strong></p>
+                    <p><strong>Lokasi:</strong> Dsn. Bojongsari, Rt.001/Rw.017, Kel. Babakan, Pangandaran</p>
+                </div>
+            </div>
+
+            <a href="https://maps.app.goo.gl/ggH3zWZ4vAMpprMv9?g_st=ac" target="_blank" class="btn-buka" style="text-decoration: none; display: inline-block; margin-top: 20px;">
+                Lihat Lokasi (Google Maps)
+            </a>
+        </section>
+
+        <section id="gallery">
+            <h2>Our Moments</h2>
+            <div class="gallery-grid">
+                <img src="/assets/gallery/foto1.jpg" alt="Galeri 1">
+                <img src="/assets/gallery/foto2.jpg" alt="Galeri 2">
+                <img src="/assets/gallery/foto3.jpg" alt="Galeri 3">
+                <img src="/assets/gallery/foto4.jpg" alt="Galeri 4">
+            </div>
+        </section>
+
+        <section id="rsvp-gift">
+            <h2>RSVP & Gift</h2>
+            <p>Kehadiran Anda adalah hadiah terindah bagi kami.</p>
+            
+            <div style="background: #fff; padding: 20px; border: 1px dashed var(--primary-gold); border-radius: 10px; width: 100%; max-width: 400px; margin-bottom: 30px;">
+                <img src="/assets/dana.png" width="100">
+                <p>Rek: <strong>081318678393</strong> <br> a.n Nisa Efriani</p>
+                <button onclick="alert('Nomor rekening disalin!')" style="padding: 5px 10px; cursor: pointer;">Salin</button>
+            </div>
+            
+            <div style="background: #fff; padding: 20px; border: 1px dashed var(--primary-gold); border-radius: 10px; width: 100%; max-width: 400px; margin-bottom: 30px;">
+                <img src="/assets/dana.png" width="100">
+                <p>Rek: <strong>085295060569</strong> <br> a.n Ilham Maulana Yusup</p>
+                <button onclick="alert('Nomor rekening disalin!')" style="padding: 5px 10px; cursor: pointer;">Salin</button>
+            </div>
+
+            <form style="width: 100%; max-width: 500px; text-align: left;">
+                <label>Nama</label>
+                <input id="inputNamaTamu" type="text" placeholder="Nama Anda" name="nama" required>
+                <label>Alamat</label>
+                <textarea rows="3" placeholder="Alamat anda..." name="alamat" required></textarea>
+                <label>Ucapan</label>
+                <textarea rows="3" placeholder="Berikan ucapan..." name="ucapan" required></textarea>
+                <label>Konfirmasi</label>
+                <select name="kehadiran">
+                    <option value="hadir">Hadir</option>
+                    <option value="ragu">Ragu-ragu</option>
+                    <option value="tidak">Tidak Hadir</option>
+                </select>
+                <button type="button" class="btn-buka" style="width: 100%; margin-top: 10px;">Kirim Ucapan</button>
+            </form>
+        </section>
+
+        <section id="closing" style="min-height: 40vh;">
+            <p>Atas kehadiran dan doa restu Bapak/Ibu/Saudara/i, kami ucapkan terima kasih.</p>
+            <p>Wassalamu’alaikum Warahmatullahi Wabarakatuh</p>
+            <h2 style="margin-top: 30px;">Nisa Efriani<br>&<br>Ilham Maulana Yusup</h2>
+        </section>
+
+    </main>
+
+    <div class="nav-bottom">
+        <a href="#home">
+        	<svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+						fill="currentColor" viewBox="0 0 24 24" >
+						<!--Boxicons v3.0.6 https://boxicons.com | License  https://docs.boxicons.com/free-->
+						<path d="M3 13h1v7c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h1c.4 0 .77-.24.92-.62.16-.37.07-.8-.22-1.09l-8.99-9a.996.996 0 0 0-1.41 0l-9.01 9c-.29.29-.37.72-.22 1.09s.52.62.92.62Z"></path>
+					</svg>
+        </a>
+        <a href="#event">
+        	<svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+						fill="currentColor" viewBox="0 0 24 24" >
+						<!--Boxicons v3.0.6 https://boxicons.com | License  https://docs.boxicons.com/free-->
+						<path d="m19,4h-2v-2h-2v2h-6v-2h-2v2h-2c-1.1,0-2,.9-2,2v1h18v-1c0-1.1-.9-2-2-2Z"></path><path d="m3,20c0,1.1.9,2,2,2h14c1.1,0,2-.9,2-2v-12H3v12Zm12-8h2v2h-2v-2Zm0,4h2v2h-2v-2Zm-4-4h2v2h-2v-2Zm0,4h2v2h-2v-2Zm-4-4h2v2h-2v-2Zm0,4h2v2h-2v-2Z"></path>
+					</svg>
+        </a>
+        <a href="#gallery">
+        	<svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+						fill="currentColor" viewBox="0 0 24 24" >
+						<!--Boxicons v3.0.6 https://boxicons.com | License  https://docs.boxicons.com/free-->
+						<path class="b" d="M12 11A2 2 0 1 0 12 15 2 2 0 1 0 12 11z"></path><path class="b" d="m20,5h-3l-2.32-1.79c-.18-.14-.39-.21-.61-.21h-4.14c-.22,0-.44.07-.61.21l-2.32,1.79h-3c-1.1,0-2,.9-2,2v12c0,1.1.9,2,2,2h16c1.1,0,2-.9,2-2V7c0-1.1-.9-2-2-2Zm-8,12c-2.17,0-4-1.83-4-4s1.83-4,4-4,4,1.83,4,4-1.83,4-4,4Zm7-8c-.55,0-1-.45-1-1s.45-1,1-1,1,.45,1,1-.45,1-1,1Z"></path>
+					</svg>
+        </a>
+        <a href="#rsvp-gift">
+        	<svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+						fill="currentColor" viewBox="0 0 24 24" >
+						<!--Boxicons v3.0.6 https://boxicons.com | License  https://docs.boxicons.com/free-->
+						<path d="m20,7h-1.21c.13-.41.21-.9.21-1.5,0-1.93-1.57-3.5-3.5-3.5-1.62,0-2.7,1.48-3.4,3.09-.69-1.51-1.83-3.09-3.6-3.09-1.93,0-3.5,1.57-3.5,3.5,0,.6.08,1.09.21,1.5h-1.21c-1.1,0-2,.9-2,2s.9,2,2,2h16c1.1,0,2-.9,2-2s-.9-2-2-2Zm-4.5-3c.83,0,1.5.67,1.5,1.5,0,1.5-.63,1.5-1,1.5h-2.48c.51-1.58,1.25-3,1.98-3Zm-8.5,1.5c0-.83.67-1.5,1.5-1.5.89,0,1.71,1.53,2.2,3h-2.7c-.37,0-1,0-1-1.5Z"></path><path d="m5,13h-1v7c0,1.1.9,2,2,2h5v-9h-6Z"></path><path d="m18,13h-5v9h5c1.1,0,2-.9,2-2v-7h-2Z"></path>
+					</svg>
+        </a>
+    </div>
+
+    <script>
+        // 1. SETUP MUSIK & FULLSCREEN
+        const btnOpen = document.getElementById('btn-open');
+        const overlay = document.getElementById('opening-overlay');
+        const music = document.getElementById('bg-music');
+        let currentTime = 0;
+        hasOverlay = true;
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const namaTamu = urlParams.get('tamu') ?? 'Nama Tamu Undangan';
+        
+        document.querySelector('#namaTamu').innerText = namaTamu;
+        document.querySelector('#inputNamaTamu').value = namaTamu;
+
+        btnOpen.addEventListener('click', () => {
+            // A. Hilangkan Overlay (Slide Up)
+            overlay.classList.add('closed');
+            enableScroll()
+            hasOverlay = false;
+            
+            // B. Putar Musik
+            music.play().then(() => {
+                console.log("Musik berputar");
+            }).catch((err) => {
+                console.log("Gagal memutar musik otomatis: ", err);
+            });
+
+            // C. Masuk Fullscreen
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+            
+            
+        });
+        
+        document.addEventListener('visibilitychange', () => {
+        	console.log(document.visibilityState)
+        	if (document.visibilityState === 'hidden') {
+        		music.pause()
+        		currentTime = music.currentTime; 
+        	} else {
+        		music.currentTime = currentTime;
+        		music.play().then(() => {
+            	console.log('Page visible, audio resumed from: ' + currentTime);
+        		}).catch(error => {
+        			console.log('Resume blocked, user interaction needed to play.');
+        		});
+        	}
+				});
+
+        // 2. SETUP ANIMASI SCROLL (INTERSECTION OBSERVER)
+        // Opsi: ambang batas (threshold) 0.2 artinya animasi mulai saat 20% elemen terlihat
+        const observerOptions = {
+            threshold: 0.2
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Tambahkan class 'visible' saat elemen masuk viewport
+                    entry.target.classList.add('visible');
+                    // (Opsional) Hentikan observasi jika ingin animasi hanya sekali
+                    // observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        // Targetkan semua elemen <section> untuk diobservasi
+        const sections = document.querySelectorAll('section');
+        sections.forEach(sec => {
+            observer.observe(sec);
+        });
+        
+        // Function to disable scrolling
+				function disableScroll() {
+					//document.body.style.overflow = 'hidden';
+				}
+				
+				// Function to enable scrolling
+				function enableScroll() {
+					document.body.style.overflow = '';
+				}
+
+    </script>
+</body>
+</html>
